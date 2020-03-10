@@ -10,11 +10,14 @@ public class Room {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "roomId")
     private Long id;
     @ManyToOne
     @JoinColumn(name = "hotelId")
     private Hotel hotel;
-    private Long roomTypeId;
+    @ManyToOne
+    @JoinColumn(name = "roomTypeId")
+    private RoomType roomType;
     @Column(name = "roomFloor", nullable = false)
     private Integer floor;
     @Column(nullable = false)
@@ -47,12 +50,12 @@ public class Room {
         this.hotel = hotel;
     }
 
-    public Long getRoomTypeId() {
-        return roomTypeId;
+    public RoomType getRoomTypeId() {
+        return roomType;
     }
 
-    public void setRoomTypeId(Long roomTypeId) {
-        this.roomTypeId = roomTypeId;
+    public void setRoomTypeId(RoomType roomType) {
+        this.roomType = roomType;
     }
 
     public Integer getFloor() {
@@ -86,7 +89,7 @@ public class Room {
         Room room = (Room) o;
         return id.equals(room.id) &&
                 hotel.equals(room.hotel) &&
-                roomTypeId.equals(room.roomTypeId) &&
+                roomType.equals(room.roomType) &&
                 floor.equals(room.floor) &&
                 roomNumber.equals(room.roomNumber) &&
                 price.equals(room.price);
@@ -94,7 +97,7 @@ public class Room {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, hotel, roomTypeId, floor, roomNumber, price);
+        return Objects.hash(id, hotel, roomType, floor, roomNumber, price);
     }
 
     @Override
@@ -102,7 +105,7 @@ public class Room {
         return "Room{" +
                 "id=" + id +
                 ", hotel code=" + hotel.getCode() +
-                ", roomTypeId=" + roomTypeId +
+                ", roomTypeId=" + roomType.getId() +
                 ", floor=" + floor +
                 ", roomNumber=" + roomNumber +
                 ", price=" + price +

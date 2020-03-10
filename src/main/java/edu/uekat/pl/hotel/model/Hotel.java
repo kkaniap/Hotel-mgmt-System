@@ -32,6 +32,8 @@ public class Hotel {
     private String phoneNr;
     @OneToMany(mappedBy = "hotel")
     private List<Room> rooms = new ArrayList<Room>();;
+    @OneToMany(mappedBy = "hotel")
+    private List<Employee> employees = new ArrayList<Employee>();
 
     public Hotel() {
     }
