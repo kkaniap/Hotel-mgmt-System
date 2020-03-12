@@ -2,6 +2,8 @@ package edu.uekat.pl.hotel.model;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -24,6 +26,8 @@ public class Room {
     private Integer roomNumber;
     @Column(nullable = false)
     private BigDecimal price;
+    @ManyToMany(mappedBy = "rooms")
+    private List<Reservation> reservations = new ArrayList<Reservation>();
 
     public Room() {
     }
@@ -80,6 +84,22 @@ public class Room {
 
     public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public RoomType getRoomType() {
+        return roomType;
+    }
+
+    public void setRoomType(RoomType roomType) {
+        this.roomType = roomType;
+    }
+
+    public List<Reservation> getReservations() {
+        return reservations;
+    }
+
+    public void setReservations(List<Reservation> reservations) {
+        this.reservations = reservations;
     }
 
     @Override

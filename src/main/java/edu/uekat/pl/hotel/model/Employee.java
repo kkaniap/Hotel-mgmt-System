@@ -2,6 +2,8 @@ package edu.uekat.pl.hotel.model;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -41,6 +43,8 @@ public class Employee {
     @ManyToOne
     @JoinColumn(name = "hotelId")
     private Hotel hotel;
+    @OneToMany(mappedBy = "employee")
+    private List<Reservation> reservations = new ArrayList<Reservation>();
 
     public Employee() {
     }
