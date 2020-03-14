@@ -20,6 +20,8 @@ public class Guest {
     @Column(nullable = false)
     private String lastName;
     @Column(nullable = false)
+    private Boolean isMen;
+    @Column(nullable = false)
     private String country;
     @Column(nullable = false)
     private String city;
@@ -40,11 +42,12 @@ public class Guest {
     public Guest() {
     }
 
-    public Guest(String idNumber, String firstName, String lastName, String country, String city, String address, String postCode, LocalDate birthDate
+    public Guest(String idNumber, String firstName, String lastName,boolean isMen, String country, String city, String address, String postCode, LocalDate birthDate
                  ,String email, String phoneNr, String additionalInfo){
         this.idNumber = idNumber;
         this.firstName = firstName;
         this.lastName = lastName;
+        this.isMen = isMen;
         this.country = country;
         this.city = city;
         this.address = address;
@@ -85,6 +88,14 @@ public class Guest {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public Boolean getMen() {
+        return isMen;
+    }
+
+    public void setMen(Boolean men) {
+        isMen = men;
     }
 
     public String getCountry() {
@@ -168,6 +179,7 @@ public class Guest {
                 idNumber.equals(guest.idNumber) &&
                 firstName.equals(guest.firstName) &&
                 lastName.equals(guest.lastName) &&
+                isMen.equals(guest.isMen) &&
                 country.equals(guest.country) &&
                 city.equals(guest.city) &&
                 address.equals(guest.address) &&
@@ -175,12 +187,13 @@ public class Guest {
                 birthDate.equals(guest.birthDate) &&
                 email.equals(guest.email) &&
                 phoneNr.equals(guest.phoneNr) &&
-                Objects.equals(additionalInfo, guest.additionalInfo);
+                Objects.equals(additionalInfo, guest.additionalInfo) &&
+                Objects.equals(reservations, guest.reservations);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, idNumber, firstName, lastName, country, city, address, postCode, birthDate, email, phoneNr, additionalInfo);
+        return Objects.hash(id, idNumber, firstName, lastName, isMen, country, city, address, postCode, birthDate, email, phoneNr, additionalInfo, reservations);
     }
 
     @Override
@@ -190,6 +203,7 @@ public class Guest {
                 ", idNumber='" + idNumber + '\'' +
                 ", firstName='" + firstName + '\'' +
                 ", lastName='" + lastName + '\'' +
+                ", isMen=" + isMen +
                 ", country='" + country + '\'' +
                 ", city='" + city + '\'' +
                 ", address='" + address + '\'' +
@@ -198,6 +212,7 @@ public class Guest {
                 ", email='" + email + '\'' +
                 ", phoneNr='" + phoneNr + '\'' +
                 ", additionalInfo='" + additionalInfo + '\'' +
+                ", reservations=" + reservations.size() +
                 '}';
     }
 }
