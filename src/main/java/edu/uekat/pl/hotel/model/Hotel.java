@@ -32,7 +32,7 @@ public class Hotel {
     private String phoneNr;
     @OneToMany(mappedBy = "hotel")
     private List<Room> rooms = new ArrayList<Room>();;
-    @OneToMany(mappedBy = "hotel")
+    @OneToMany(mappedBy = "hotel", fetch = FetchType.EAGER)
     private List<Employee> employees = new ArrayList<Employee>();
 
     public Hotel() {
@@ -136,6 +136,14 @@ public class Hotel {
 
     public void setRooms(List<Room> rooms) {
         this.rooms = rooms;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 
     @Override

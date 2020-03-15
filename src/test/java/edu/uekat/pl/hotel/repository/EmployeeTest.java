@@ -7,6 +7,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -25,6 +29,7 @@ public class EmployeeTest {
                         , "31-932", "332332222", "macwro@gmail.com", "Manager");
         e3 = new Employee("Weronika", "Kowalska", false, LocalDate.of(2000,12,5), LocalDate.now(), "Kraków", "Jagodowa 21", "Poland"
                         , "55-200", "434443091", "werkow@gmail.com", "receptionist");
+
     }
 
     @Test
@@ -39,4 +44,77 @@ public class EmployeeTest {
     void findNotExistingEmployee(){
         assertTrue(employeeRepo.findByFirstNameAndLastName("Marcin", "Kowalski").isEmpty());
     }
+
+    @Test
+    @DisplayName("save employee with reportsTo")
+    void saveEmployeeWithReportsToEquals(){
+        List<Employee> employeeList = new ArrayList<Employee>();
+
+        employeeList.add(e1);
+        employeeList.add(e2);
+
+        for(Employee e : employeeList){
+            e.setReportsTo(e1);
+        }
+
+        employeeRepo.saveAll(employeeList);
+        Employee boss = employeeRepo.findById(2L).map(Employee::getReportsTo).get();
+
+        assertEquals("Marcin".concat("Biedronka"), boss.getFirstName().concat(boss.getLastName()));
+    }
+
+    @Test
+    @DisplayName("save employee with reportsTo not equals")
+    void saveEmployeeWithReportsToNotEquals(){
+        List<Employee> employeeList = new ArrayList<Employee>();
+
+        employeeList.add(e1);
+        employeeList.add(e2);
+
+        for(Employee e : employeeList){
+            e.setReportsTo(e1);
+        }
+
+        employeeRepo.saveAll(employeeList);
+        Employee boss = employeeRepo.findById(2L).map(Employee::getReportsTo).get();
+
+        assertNotEquals("Marcin".concat("Kania"), boss.getFirstName().concat(boss.getLastName()));
+    }
+
+    @Test
+    @DisplayName("save employee with reportsTo not null")
+    void saveEmployeeWithReportsToNotNull(){
+        List<Employee> employeeList = new ArrayList<Employee>();
+
+        employeeList.add(e1);
+        employeeList.add(e2);
+
+        for(Employee e : employeeList){
+            e.setReportsTo(e1);
+        }
+
+        employeeRepo.saveAll(employeeList);
+        Optional<Employee> boss = employeeRepo.findById(2L).map(Employee::getReportsTo);
+
+        assertTrue(boss.isPresent());
+    }
+
+    @Test
+    @DisplayName("save employee with reportsTo null")
+    void saveEmployeeWithReportsToNull(){
+        List<Employee> employeeList = new ArrayList<Employee>();
+
+        employeeList.add(e1);
+        employeeList.add(e2);
+
+        for(Employee e : employeeList){
+            e.setReportsTo(e1);
+        }
+
+        employeeRepo.saveAll(employeeList);
+        Optional<Employee> boss = employeeRepo.findById(2L).map(Employee::getReportsTo);
+
+        assertFalse(boss.isEmpty());
+    }
+
 }
