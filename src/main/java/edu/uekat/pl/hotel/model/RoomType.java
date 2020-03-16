@@ -17,15 +17,18 @@ public class RoomType {
     private String typeName;
     @Column(nullable = false)
     private Double roomRate;
+    @Column(nullable = false)
+    private String description;
     @OneToMany(mappedBy = "roomType")
     private List<Room> roomList = new ArrayList<Room>();
 
     public RoomType() {
     }
 
-    public RoomType(String typeName, Double roomRate){
+    public RoomType(String typeName, Double roomRate, String description){
         this.typeName = typeName;
         this.roomRate = roomRate;
+        this.description = description;
     }
 
     public Long getId() {
@@ -60,6 +63,14 @@ public class RoomType {
         this.roomList = roomList;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -68,12 +79,13 @@ public class RoomType {
         return id.equals(roomType.id) &&
                 typeName.equals(roomType.typeName) &&
                 roomRate.equals(roomType.roomRate) &&
+                description.equals(roomType.description) &&
                 Objects.equals(roomList, roomType.roomList);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, typeName, roomRate, roomList);
+        return Objects.hash(id, typeName, roomRate, description, roomList);
     }
 
     @Override
@@ -82,6 +94,8 @@ public class RoomType {
                 "id=" + id +
                 ", typeName='" + typeName + '\'' +
                 ", roomRate=" + roomRate +
+                ", description='" + description + '\'' +
+                ", roomList=" + roomList.size() +
                 '}';
     }
 }
