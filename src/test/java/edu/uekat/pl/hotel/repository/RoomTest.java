@@ -22,6 +22,7 @@ public class RoomTest {
     RoomTypeRepository roomTypeRepository;
     @Autowired
     HotelRepository hotelRepository;
+
     static Room r1, r2, r3;
     static RoomType rt1, rt2;
     static Hotel h1;

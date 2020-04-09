@@ -2,12 +2,14 @@ package edu.uekat.pl.hotel.repository;
 
 import edu.uekat.pl.hotel.model.Employee;
 import edu.uekat.pl.hotel.model.Hotel;
+import edu.uekat.pl.hotel.model.Room;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,8 +22,12 @@ public class HotelTest {
     HotelRepository hotelRepository;
     @Autowired
     EmployeeRepository employeeRepository;
+    @Autowired
+    RoomRepository roomRepository;
+
     static Hotel h1;
     static Employee e1,e2,e3;
+    static Room r1, r2, r3;
 
     @BeforeAll
     static void setUp(){
@@ -33,6 +39,9 @@ public class HotelTest {
                 , "31-932", "332332222", "macwro@gmail.com", "Manager");
         e3 = new Employee("Weronika", "Kowalska", false, LocalDate.of(2000,12,5), LocalDate.now(), "Kraków", "Jagodowa 21", "Poland"
                 , "55-200", "434443091", "werkow@gmail.com", "receptionist");
+        r1 = new Room(1,10,new BigDecimal("80.99"));
+        r2 = new Room(1,25,new BigDecimal("50"));
+        r3 = new Room(2, 51, new BigDecimal("50"));
     }
 
     @Test
@@ -77,5 +86,45 @@ public class HotelTest {
         assertNotEquals(0, hotelRepository.findById(1L).map(Hotel::getEmployees).get().size());
     }
 
+    @Test
+    @DisplayName("Get all rooms from hotel")
+    void GetAllRoomsFromHotel(){
+        hotelRepository.save(h1);
+
+        List<Room> roomList = List.of(r1, r2, r3);
+        for (Room r : roomList){
+            r.setHotel(h1);
+        }
+
+        roomRepository.saveAll(roomList);
+        assertEquals(3, hotelRepository.findById(1L).map(Hotel::getEmployees).get().size());
+    }
+
+    @Test
+    @DisplayName("Get all rooms from hotel false")
+    void GetAllRoomsFromHotelFalse(){
+        hotelRepository.save(h1);
+
+        List<Room> roomList = List.of(r1, r2, r3);
+        for (Room r : roomList){
+            r.setHotel(h1);
+        }
+
+        roomRepository.saveAll(roomList);
+        assertNotEquals(0, hotelRepository.findById(1L).map(Hotel::getEmployees).get().size());
+    }
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,6 +1,7 @@
 package edu.uekat.pl.hotel.repository;
 
 import edu.uekat.pl.hotel.model.Employee;
+import edu.uekat.pl.hotel.model.Hotel;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,8 +19,11 @@ public class EmployeeTest {
 
     @Autowired
     EmployeeRepository employeeRepo;
+    @Autowired
+    HotelRepository hotelRepository;
 
     static Employee e1,e2,e3;
+    static Hotel h1;
 
     @BeforeAll
     static void setUp(){
@@ -29,7 +33,9 @@ public class EmployeeTest {
                         , "31-932", "332332222", "macwro@gmail.com", "Manager");
         e3 = new Employee("Weronika", "Kowalska", false, LocalDate.of(2000,12,5), LocalDate.now(), "Kraków", "Jagodowa 21", "Poland"
                         , "55-200", "434443091", "werkow@gmail.com", "receptionist");
-
+        h1 = new Hotel("HT-001", "Hotel Tychy", "Tychy", "Borowa 1", "43-443", 4, "Poland", "hoteltychy@gmail.com"
+                ,"548563254");
+        e1 = new Employee();
     }
 
     @Test
@@ -117,4 +123,14 @@ public class EmployeeTest {
         assertFalse(boss.isEmpty());
     }
 
+    @Test
+    @DisplayName("From which hotel is Employee")
+    void fromWhichHotelIsEmployee(){
+        hotelRepository.save(h1);
+
+        e1.setHotel(h1);
+        employeeRepo.save(e1);
+
+        assertEquals(1L, employeeRepo.findById(1L).get().getId());
+    }
 }
