@@ -1,8 +1,6 @@
 package edu.uekat.pl.hotel.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -12,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class Room {
 
@@ -29,17 +27,25 @@ public class Room {
     @JoinColumn(name = "roomTypeId")
     private RoomType roomType;
 
+    @NonNull
     @Column(name = "roomFloor", nullable = false)
     private Integer floor;
 
+    @NonNull
     @Column(nullable = false)
     private Integer roomNumber;
 
+    @NonNull
     @Column(nullable = false)
     private BigDecimal price;
 
     @ManyToMany(mappedBy = "rooms")
-    private List<Reservation> reservations = new ArrayList<Reservation>();
+    private List<Reservation> reservations = new ArrayList<>();
+
+    public void addRoomTypeToRoom(RoomType roomType){
+        roomType.getRoomList().add(this);
+        this.setRoomType(roomType);
+    }
 
     @Override
     public String toString() {

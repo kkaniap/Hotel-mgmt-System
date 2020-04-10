@@ -6,32 +6,38 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class MealTypeTest {
 
     @Autowired
-    MealTypeRepository mealTypeRepository;
-    static MealType m1;
-
-    @BeforeAll
-    static void setUp(){
-        m1 = new MealType("all inclusive", "drinks and food is for free");
-    }
+    MealTypeRepository mealTypeRepo;
 
     @Test
-    @DisplayName("find meal type by name is not null")
+    @DisplayName("Save and find meal type by name")
     void findMealTypeByNameNotNull(){
-        mealTypeRepository.save(m1);
-        assertTrue(mealTypeRepository.findByMealType("all inclusive").isPresent());
+        //given
+        MealType mt1 = new MealType("HB", "Breakfast and Lunch");
+        //when
+        mealTypeRepo.save(mt1);
+        Optional<MealType> result = mealTypeRepo.findByMealType("HB");
+        //then
+        assertEquals("HB".toLowerCase(), result.get().getMealType().toLowerCase());
     }
 
     @Test
-    @DisplayName("find meal type by name")
+    @DisplayName("Find meal type by not exisitng name")
     void findMealTypeByName(){
-        mealTypeRepository.save(m1);
-        assertTrue(mealTypeRepository.findByMealType("1").isEmpty());
+        //given
+        String name = "AA";
+        //when
+        Optional<MealType> result = mealTypeRepo.findByMealType("name");
+        //then
+        assertFalse(result.isPresent());
     }
 
 }

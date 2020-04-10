@@ -1,9 +1,6 @@
 package edu.uekat.pl.hotel.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class Employee {
 
@@ -22,36 +19,47 @@ public class Employee {
     @Column(name = "employeeId")
     private Long id;
 
+    @NonNull
     @Column(nullable = false)
     private String firstName;
 
+    @NonNull
     @Column(nullable = false)
     private String lastName;
 
+    @NonNull
     @Column(nullable = false)
     private Boolean isMen;
 
+    @NonNull
     @Column(nullable = false)
     private LocalDate birthDate;
 
+    @NonNull
     @Column(nullable = false)
     private LocalDate hireDate;
 
+    @NonNull
     @Column(nullable = false)
     private String city;
 
+    @NonNull
     @Column(nullable = false)
     private String address;
 
+    @NonNull
     @Column(nullable = false)
     private String country;
 
+    @NonNull
     @Column(nullable = false)
     private String postCode;
 
+    @NonNull
     @Column(nullable = false)
     private String phoneNr;
 
+    @NonNull
     @Column(nullable = false)
     private String email;
 
@@ -59,6 +67,7 @@ public class Employee {
     @JoinColumn(name = "reportsTo")
     private Employee reportsTo;
 
+    @NonNull
     @Column(nullable = false)
     private String role;
 
@@ -68,7 +77,12 @@ public class Employee {
 
     @OneToMany(mappedBy = "employee",
             cascade = CascadeType.ALL)
-    private List<Reservation> reservations = new ArrayList<Reservation>();
+    private List<Reservation> reservations = new ArrayList<>();
+
+    public void addReservationToEmployee(Reservation reservation){
+        reservation.setEmployee(this);
+        this.getReservations().add(reservation);
+    }
 
     @Override
     public String toString() {

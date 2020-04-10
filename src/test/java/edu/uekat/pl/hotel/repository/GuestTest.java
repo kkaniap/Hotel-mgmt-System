@@ -1,15 +1,19 @@
 package edu.uekat.pl.hotel.repository;
 
 import edu.uekat.pl.hotel.model.Guest;
+import edu.uekat.pl.hotel.model.Reservation;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -18,66 +22,58 @@ public class GuestTest {
 
     @Autowired
     GuestRepository guestRepository;
-    static Guest g1, g2, g3;
-
-    @BeforeAll
-    static void setUp(){
-        g1 = new Guest("APY2231", "Patryk", "Kania", true, "Poland", "Tychy", "Zimna 10", "43-100", LocalDate.now()
-                ,"xkaniax@gmail.com", "558452145", "Administrator");
-        g2 = new Guest("AXK2546","Karolina", "Loson", false, "Poland", "Wrocław", "Malinowa", "44-915", LocalDate.now()
-                , "karlo@gmail.com", "552365896", "");
-        g3 = new Guest("KRW5201", "Karol", "Nowak", true, "Poland", "Katowice", "Asnyka 16/50", "33-421", LocalDate.now()
-                , "karnow@gmail.com", "558555201", "Premium guest");
-    }
 
     @Test
     @DisplayName("Save and find by ID number")
-    void whenSaveThenFindByIdNumberIsNotNull(){
+    void saveGuestAndFindByIdNumber(){
+        //given
+        Guest g1 = new Guest("APY2231", "Patryk", "Kania", true, "Poland", "Tychy", "Zimna 10", "43-100", LocalDate.now()
+                ,"xkaniax@gmail.com", "558452145");
+        //when
         guestRepository.save(g1);
-        assertNotNull(guestRepository.findByIdNumber("AXY2231"));
+        Optional<Guest> guest = guestRepository.findByIdNumber("APY2231");
+        //then
+        assertEquals("APY2231", guest.get().getIdNumber());
     }
 
     @Test
     @DisplayName("Find not existing guest by ID number")
     void findByIdNumberIsNull(){
-        assertTrue(guestRepository.findByIdNumber("KK23321").isEmpty());
+        //given
+        String idNumber = "KK23321";
+        //when
+        Optional<Guest> result = guestRepository.findByIdNumber(idNumber);
+        //then
+        assertFalse(result.isPresent());
     }
 
     @Test
     @DisplayName("Save and find by first and last name")
-    void saveAndFindByFirstAndLastNameIsNotNull(){
-        guestRepository.save(g1);
-        assertFalse(guestRepository.findByFirstNameAndLastName("Patryk","Kania").isEmpty());
+    void findByFirstAndLastName(){
+        //given
+        String name = "Karol";
+        String lastName = "Kania";
+        //when
+        Optional<Guest> result = guestRepository.findByFirstNameAndLastName(name, lastName);
+        //then
+        assertTrue(result.isPresent());
+        assertEquals(name.toLowerCase(), result.get().getFirstName().toLowerCase());
+        assertEquals(lastName.toLowerCase(), result.get().getLastName().toLowerCase());
     }
 
     @Test
-    @DisplayName("Find not existing guest by first and last name")
-    void findByFirstAndLastNameIsNull(){
-        assertTrue(guestRepository.findByFirstNameAndLastName("Karol","Nowak").isEmpty());
+    @DisplayName("Save guest with reservations and find them")
+    @Transactional
+    void saveAndFindFindAllReservations(){
+        //given
+        Optional<Guest> guest = guestRepository.findById(1L);
+        Reservation reservation = new Reservation(LocalDateTime.of(2020,3, 21, 10, 10)
+                ,LocalDateTime.of(2020, 3, 30, 12, 0)
+                ,LocalDateTime.of(2020, 4, 5, 12, 0), 2, 0);
+        //when
+        guest.ifPresent(g -> g.addReservationToGuest(reservation));
+        Optional<Guest> result = guestRepository.findById(1L);
+        //then
+        assertEquals(2, result.get().getReservations().size());
     }
-
-    @Test
-    @DisplayName("Save 3 guest and find all")
-    void saveAndFindAllGuestIsEquals(){
-        List<Guest> guestList = new ArrayList<Guest>();
-        guestList.add(g1);
-        guestList.add(g2);
-        guestList.add(g3);
-
-        guestRepository.saveAll(guestList);
-        assertEquals(3, guestRepository.findAll().size());
-    }
-
-    @Test
-    @DisplayName("Save 3 guest and try to find 4 guest")
-    void saveAndFindAllGuestIsNotEquals(){
-        List<Guest> guestList = new ArrayList<Guest>();
-        guestList.add(g1);
-        guestList.add(g2);
-        guestList.add(g3);
-
-        guestRepository.saveAll(guestList);
-        assertNotEquals(4, guestRepository.findAll().size());
-    }
-
 }

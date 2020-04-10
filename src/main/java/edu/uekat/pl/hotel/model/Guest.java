@@ -1,9 +1,6 @@
 package edu.uekat.pl.hotel.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -13,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class Guest {
 
@@ -22,36 +19,47 @@ public class Guest {
     @Column(name = "guestId")
     private Long id;
 
+    @NonNull
     @Column(nullable = false, unique = true)
     private String idNumber;
 
+    @NonNull
     @Column(nullable = false)
     private String firstName;
 
+    @NonNull
     @Column(nullable = false)
     private String lastName;
 
+    @NonNull
     @Column(nullable = false)
     private Boolean isMen;
 
+    @NonNull
     @Column(nullable = false)
     private String country;
 
+    @NonNull
     @Column(nullable = false)
     private String city;
 
+    @NonNull
     @Column(nullable = false)
     private String address;
 
+    @NonNull
     @Column(nullable = false)
     private String postCode;
 
+    @NonNull
     @Column(nullable = false)
     private LocalDate birthDate;
 
+    @NonNull
     @Column(nullable = false)
     private String email;
 
+    @NonNull
     @Column(nullable = false)
     private String phoneNr;
 
@@ -60,7 +68,12 @@ public class Guest {
     @OneToMany(mappedBy = "guest",
             cascade = CascadeType.ALL,
             orphanRemoval = true)
-    private List<Reservation> reservations = new ArrayList<Reservation>();
+    private List<Reservation> reservations = new ArrayList<>();
+
+    public void addReservationToGuest(Reservation reservation){
+        reservation.setGuest(this);
+        this.getReservations().add(reservation);
+    }
 
     @Override
     public String toString() {

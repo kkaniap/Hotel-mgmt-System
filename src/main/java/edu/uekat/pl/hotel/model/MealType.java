@@ -1,8 +1,6 @@
 package edu.uekat.pl.hotel.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -11,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Data
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 public class MealType {
 
@@ -20,12 +18,14 @@ public class MealType {
     @Column(name = "mealTypeId")
     private Long id;
 
+    @NonNull
     @Column(nullable = false)
     private String mealType;
 
+    @NonNull
     @Column(nullable = false)
     private String description;
 
     @OneToMany(mappedBy = "mealType", cascade = CascadeType.ALL)
-    private List<Reservation> reservations = new ArrayList<Reservation>();
+    private List<Reservation> reservations = new ArrayList<>();
 }

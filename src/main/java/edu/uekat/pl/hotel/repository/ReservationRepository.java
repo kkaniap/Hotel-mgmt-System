@@ -13,13 +13,19 @@ import java.util.Optional;
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
 
-    Optional<List<Reservation>> findByDateFrom(LocalDateTime date);
-
+    /***
+     * Method ignores hours,minutes and days
+     * @return List with all reservations equals to year and month
+     */
     @Query("SELECT r FROM Reservation r WHERE FUNCTION('MONTH', r.dateFrom) = FUNCTION('MONTH', :date)" +
-            "AND FUNCTION('YEAR', r.dateFrom) = function('YEAR', :date)")
-    Optional<List<Reservation>> findByDateFromYearMonth(@Param("date") LocalDateTime date);
+            "AND FUNCTION('YEAR', r.dateFrom) = FUNCTION('YEAR', :date)")
+    List<Reservation> findByDateFromYearMonth(@Param("date") LocalDateTime date);
 
-   /* @Query("SELECT r FROM Reservation r WHERE FUNCTION('MONTH', r.dateFrom) = FUNCTION('MONTH' , :date) " +
-            "AND FUNCTION('YEAR', r.dateFrom) = ")
-    Optional<List<Reservation>> findByDateFromYearMonthDay(@Param("date") LocalDateTime date);*/
+    /***
+     * Method ignores hours and minutes
+     * @return List with all reservations equals to year,month and day
+     */
+    @Query("SELECT r FROM Reservation r WHERE FUNCTION('MONTH', r.dateFrom) = FUNCTION('MONTH' , :date) " +
+            "AND FUNCTION('YEAR', r.dateFrom) = FUNCTION('YEAR', :date) AND FUNCTION('DAY', r.dateFrom) = FUNCTION('DAY', :date)")
+    List<Reservation> findByDateFromYearMonthDay(@Param("date") LocalDateTime date);
 }
