@@ -1,0 +1,37 @@
+.main-menu{
+    -fx-background-color: #2e3e4e;
+}
+
+.top-bar{
+    -fx-background-color: #253242;
+}
+
+.button{
+    -fx-background-color: none;
+    -fx-text-fill: #90bee2;
+    -fx-border-style: solid none none none;
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+    -fx-border-color: #405468;
+    -fx-border-radius: 3px;
+}
+
+.button:hover{
+    -fx-background-color: #496277;
+    -fx-text-fill: #90bee2;
+    -fx-border-style: solid none none none;
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+    -fx-border-color: #405468;
+    -fx-border-radius: 3px;
+}
+
+.last-button{
+    -fx-background-color: none;
+    -fx-text-fill: #90bee2;
+    -fx-border-style: solid none solid none;
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+    -fx-border-color: #405468;
+    -fx-border-radius: 3px;
+}
