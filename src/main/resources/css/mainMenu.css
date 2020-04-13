@@ -16,8 +16,28 @@
     -fx-border-radius: 3px;
 }
 
+.button:focused{
+     -fx-background-color: #496277;
+     -fx-text-fill: #90bee2;
+     -fx-border-style: solid none none none;
+     -fx-font-weight: bold;
+     -fx-font-size: 15;
+     -fx-border-color: #405468;
+     -fx-border-radius: 3px;
+ }
+
 .button:hover{
     -fx-background-color: #496277;
+    -fx-text-fill: #90bee2;
+    -fx-border-style: solid none none none;
+    -fx-font-weight: bold;
+    -fx-font-size: 15;
+    -fx-border-color: #405468;
+    -fx-border-radius: 3px;
+}
+
+.button:pressed{
+    -fx-background-color: #3a5163;
     -fx-text-fill: #90bee2;
     -fx-border-style: solid none none none;
     -fx-font-weight: bold;
